@@ -23,15 +23,18 @@ function App() {
       const SPY_DATA = response.data["SPY"];
       const currentPrice = SPY_DATA.close[SPY_DATA.close.length - 1];
       const initialPrice = SPY_DATA.close[0];
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const SPY_PERCENTAGE = (
         ((currentPrice - initialPrice) / currentPrice) *
         100
       ).toFixed(2);
 
+
       Object.keys(portfolio).forEach((ticker) => {
         const DATA = response.data[ticker];
         const currentPrice = DATA.close[DATA.close.length - 1];
         const initialPrice = DATA.close[0];
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const CHANGE_PERCENTAGE = (
           ((currentPrice - initialPrice) / currentPrice) *
           100
