@@ -1,4 +1,4 @@
-const DURATIONS = [
+export const DURATIONS = [
   { range: "1d", interval: "1d" },
   { range: "5d", interval: "1d" },
   { range: "3mo", interval: "1mo" },
@@ -13,7 +13,7 @@ export type Duration = {
 };
 
 type Props = {
-  range: Duration | null;
+  range: Duration;
   setRange: (range: Duration) => void;
 };
 

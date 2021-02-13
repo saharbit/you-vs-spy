@@ -5,7 +5,7 @@ import { Duration } from "./RangePicker";
 
 type Props = {
   portfolio: PortfolioState;
-  range: Duration | null;
+  range: Duration;
 };
 
 export default function Comparison({ portfolio, range }: Props) {
@@ -18,10 +18,7 @@ export default function Comparison({ portfolio, range }: Props) {
 
   function getURL(): string {
     const tickers = `SPY,${Object.keys(portfolio).join(",")}`;
-
-    return `/v8/finance/spark?symbols=${tickers}&interval=${
-      range?.interval || "1mo"
-    }&range=${range?.range || "3m"}`;
+    return `/v8/finance/spark?symbols=${tickers}&interval=${range.interval}&range=${range.range}`;
   }
 
   function setSPYChange(response: any) {
