@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useDebounce } from "use-debounce";
-import { PortfolioState } from "./App";
-import API from "./API";
+import { PortfolioState } from "../App";
+import API from "../services/API";
 
 type Props = {
   setPortfolio: (portfolio: PortfolioState) => void;

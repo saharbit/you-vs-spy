@@ -1,8 +1,8 @@
 import { useState } from "react";
-import API from "./API";
+import API from "./services/API";
 import "./App.css";
-import DatePicker from "./DatePicker";
-import Portfolio from "./Portfolio";
+import DatePicker from "./components/DatePicker";
+import Portfolio from "./components/Portfolio";
 
 export type PortfolioState = {
   [ticker: string]: {
@@ -14,7 +14,7 @@ export type PortfolioState = {
 function App() {
   const [portfolio, setPortfolio] = useState<PortfolioState>({});
 
-  async function onClick() {
+  async function onSubmit() {
     try {
       const tickers = `SPY,${Object.keys(portfolio).join(",")}`;
       const response = await API.get(
@@ -28,7 +28,6 @@ function App() {
         ((currentPrice - initialPrice) / currentPrice) *
         100
       ).toFixed(2);
-
 
       Object.keys(portfolio).forEach((ticker) => {
         const DATA = response.data[ticker];
@@ -52,7 +51,7 @@ function App() {
         <DatePicker />
         <button
           className="button-background rounded p-1 py-5 rounded-xl font-bold border border-black text-white"
-          onClick={onClick}
+          onClick={onSubmit}
         >
           VS SPY
         </button>
