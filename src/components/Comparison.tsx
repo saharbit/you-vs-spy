@@ -22,27 +22,27 @@ export default function Comparison({ portfolio, range }: Props) {
   }
 
   function setSPYChange(response: any) {
-    const SPY_DATA = response.data["SPY"];
-    const currentPrice = SPY_DATA.close[SPY_DATA.close.length - 1];
-    const initialPrice = SPY_DATA.close[0];
-    const SPY_PERCENTAGE = (
-      ((currentPrice - initialPrice) / currentPrice) *
-      100
-    ).toFixed(2);
-    setSpyChangePercentage(SPY_PERCENTAGE);
+    const data = response.data["SPY"];
+    const currentPrice = data.close[data.close.length - 1];
+    const initialPrice = data.close[0];
+    const changePercentage =
+      ((currentPrice - initialPrice) / initialPrice) * 100;
+    setSpyChangePercentage(changePercentage.toFixed(2));
   }
 
   function setPortfolioChange(response: any) {
+    let changePercentage = 0;
+
     Object.keys(portfolio).forEach((ticker) => {
-      const DATA = response.data[ticker];
-      const currentPrice = DATA.close[DATA.close.length - 1];
-      const initialPrice = DATA.close[0];
-      const CHANGE_PERCENTAGE = (
-        ((currentPrice - initialPrice) / currentPrice) *
-        100
-      ).toFixed(2);
-      setPortfolioChangePercentage(CHANGE_PERCENTAGE);
+      const data = response.data[ticker];
+      const currentPrice = data.close[data.close.length - 1];
+      const initialPrice = data.close[0];
+      const tickerWeight = portfolio[ticker].weight / 100;
+      const tickerChange =
+        ((currentPrice - initialPrice) / initialPrice) * 100 * tickerWeight;
+      changePercentage = changePercentage + tickerChange;
     });
+    setPortfolioChangePercentage(changePercentage.toFixed(2));
   }
 
   async function onSubmit() {
@@ -59,7 +59,7 @@ export default function Comparison({ portfolio, range }: Props) {
   return (
     <div className="flex flex-col">
       <button
-        className="button-background rounded p-1 py-5 rounded-xl font-bold border border-black text-white w-full mb-5"
+        className="button-background rounded p-1 py-5 rounded-xl font-bold border border-black text-white w-full mb-8"
         onClick={onSubmit}
       >
         VS SPY
@@ -67,17 +67,19 @@ export default function Comparison({ portfolio, range }: Props) {
       <div className="flex flex-row justify-evenly">
         {portfolioChangePercentage && (
           <div className="flex flex-col items-center">
-            <div className="text-white">YOU</div>
-            <div className="text-xl text-green-200 font-bold">
-              {portfolioChangePercentage}%
+            <div className="text-white text-lg">YOU</div>
+            <div className="text-2xl text-green-300 font-bold">
+              {portfolioChangePercentage}
+              <span className="text-sm">%</span>
             </div>
           </div>
         )}
         {spyChangePercentage && (
           <div className="flex flex-col items-center">
-            <div className="text-white">SPY</div>
-            <div className="text-xl text-green-200 font-bold">
-              {spyChangePercentage}%
+            <div className="text-white text-lg">SPY</div>
+            <div className="text-2xl text-green-300 font-bold">
+              {spyChangePercentage}
+              <span className="text-sm">%</span>
             </div>
           </div>
         )}

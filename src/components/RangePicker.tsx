@@ -1,5 +1,4 @@
 export const DURATIONS = [
-  { range: "1d", interval: "1d" },
   { range: "5d", interval: "1d" },
   { range: "3mo", interval: "1mo" },
   { range: "6mo", interval: "1mo" },
@@ -27,6 +26,7 @@ export default function RangePicker({ range, setRange }: Props) {
 
           return (
             <div
+              key={duration.range}
               onClick={() => setRange(duration)}
               className={`text-white py-1 px-2 border border-white rounded-xl mr-2 ${
                 isSelected ? "button-background" : "cursor-pointer"
