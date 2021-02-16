@@ -1,5 +1,6 @@
 import { PortfolioState } from "../App";
-import SymbolAutocomplete from "./SymbolAutocomplete";
+import SymbolSearch from "./SymbolSearch/SymbolSearch";
+import { useState } from "react";
 
 type Props = {
   setPortfolio: (portfolio: PortfolioState) => void;
@@ -7,10 +8,13 @@ type Props = {
 };
 
 export default function Portfolio({ portfolio, setPortfolio }: Props) {
+  const [weightInputValue, setWeightInputValue] = useState("");
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  
   return (
-    <div className="portfolio-background p-4 rounded-xl mb-5">
+    <div className="portfolio-background p-4 rounded-xl mb-5 shadow-xl">
       <div className="text-lg font-bold mb-4 text-white">My portfolio</div>
-      <SymbolAutocomplete portfolio={portfolio} setPortfolio={setPortfolio} />
+      <SymbolSearch portfolio={portfolio} setPortfolio={setPortfolio} />
       <div>
         {Object.entries(portfolio).map(([ticker, { weight, name }]) => (
           <div
@@ -23,15 +27,21 @@ export default function Portfolio({ portfolio, setPortfolio }: Props) {
             </div>
             <div className="flex flex-row items-center">
               <input
-                className="rounded p-1 mr-2 input-background text-white w-12"
+                className="rounded-xl p-2 mr-2 input-background text-white w-12"
                 type="number"
-                value={weight.toString()}
+                value={focusedInput === ticker ? weightInputValue : weight}
+                onBlur={() => setFocusedInput(null)}
+                onFocus={() => {
+                  setFocusedInput(ticker);
+                  setWeightInputValue("");
+                }}
                 onChange={(e) => {
-                  const weight = parseInt(e.target.value, 10);
-
+                  const weight = e.target.value;
+                  setWeightInputValue(weight);
+                  
                   setPortfolio({
                     ...portfolio,
-                    [ticker]: { ...portfolio[ticker], weight },
+                    [ticker]: { ...portfolio[ticker], weight }
                   });
                 }}
               />

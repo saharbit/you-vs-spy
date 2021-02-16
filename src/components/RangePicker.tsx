@@ -18,9 +18,9 @@ type Props = {
 
 export default function RangePicker({ range, setRange }: Props) {
   return (
-    <div className="portfolio-background p-4 rounded-xl mb-5">
+    <div className="portfolio-background p-4 rounded-xl mb-5 shadow-xl">
       <div className="text-lg font-bold mb-4 text-white">Range</div>
-      <div className="flex flex-row">
+      <div className="flex flex-row mb-3">
         {DURATIONS.map((duration) => {
           const isSelected = duration.range === range?.range;
 

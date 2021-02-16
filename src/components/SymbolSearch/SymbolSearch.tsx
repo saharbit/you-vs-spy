@@ -1,15 +1,17 @@
 import Select from "react-select";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import API from "../services/API";
-import { PortfolioState } from "../App";
+import API from "../../services/API";
+import { PortfolioState } from "../../App";
+import { customStyles } from "./customStyles";
+import Placeholder from "./Placeholder";
 
 type Props = {
   setPortfolio: (portfolio: PortfolioState) => void;
   portfolio: PortfolioState;
 };
 
-export default function SymbolAutocomplete({ setPortfolio, portfolio }: Props) {
+export default function SymbolSearch({ setPortfolio, portfolio }: Props) {
   const [isSearching, setIsSearching] = useState(false);
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 1000);
@@ -42,6 +44,8 @@ export default function SymbolAutocomplete({ setPortfolio, portfolio }: Props) {
 
   return (
     <Select
+      components={{ Placeholder }}
+      styles={customStyles}
       onInputChange={setSearch}
       inputValue={search}
       options={symbolOptions}
@@ -49,12 +53,12 @@ export default function SymbolAutocomplete({ setPortfolio, portfolio }: Props) {
         setSymbolOptions([]);
         const ticker = option.value;
         const name = option.name;
-        setPortfolio({ ...portfolio, [ticker]: { name, weight: 0 } });
+        setPortfolio({ ...portfolio, [ticker]: { name, weight: "0" } });
       }}
       value={null}
-      placeholder="Add symbol"
+      placeholder="Search symbol"
       isLoading={isSearching}
-      className="mb-4"
+      className="mb-3"
     />
   );
 }

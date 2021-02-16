@@ -6,7 +6,7 @@ import "./App.css";
 
 export type PortfolioState = {
   [ticker: string]: {
-    weight: number;
+    weight: string;
     name: string;
   };
 };

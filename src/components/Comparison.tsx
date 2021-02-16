@@ -37,7 +37,7 @@ export default function Comparison({ portfolio, range }: Props) {
       const data = response.data[ticker];
       const currentPrice = data.close[data.close.length - 1];
       const initialPrice = data.close[0];
-      const tickerWeight = portfolio[ticker].weight / 100;
+      const tickerWeight = Number(portfolio[ticker].weight) / 100;
       const tickerChange =
         ((currentPrice - initialPrice) / initialPrice) * 100 * tickerWeight;
       changePercentage = changePercentage + tickerChange;
@@ -59,25 +59,40 @@ export default function Comparison({ portfolio, range }: Props) {
   return (
     <div className="flex flex-col">
       <button
-        className="button-background rounded p-1 py-5 rounded-xl font-bold border border-black text-white w-full mb-8"
+        className="button-background rounded p-1 py-5 rounded-xl font-bold border border-black text-white w-full mb-8 shadow-xl"
         onClick={onSubmit}
       >
         VS SPY
       </button>
-      <div className="flex flex-row justify-evenly">
+      <div className="flex flex-row justify-evenly items-center">
         {portfolioChangePercentage && (
           <div className="flex flex-col items-center">
             <div className="text-white text-lg">YOU</div>
-            <div className="text-2xl text-green-300 font-bold">
+            <div
+              className={`text-2xl font-bold ${
+                Number(portfolioChangePercentage) > 0
+                  ? "text-green-300"
+                  : "text-red-300"
+              }`}
+            >
               {portfolioChangePercentage}
               <span className="text-sm">%</span>
             </div>
           </div>
         )}
+        {portfolioChangePercentage && spyChangePercentage && (
+          <div className="text-white">VS</div>
+        )}
         {spyChangePercentage && (
           <div className="flex flex-col items-center">
             <div className="text-white text-lg">SPY</div>
-            <div className="text-2xl text-green-300 font-bold">
+            <div
+              className={`text-2xl font-bold ${
+                Number(spyChangePercentage) > 0
+                  ? "text-green-300"
+                  : "text-red-300"
+              }`}
+            >
               {spyChangePercentage}
               <span className="text-sm">%</span>
             </div>
